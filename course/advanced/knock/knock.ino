@@ -19,6 +19,7 @@
  */
  
  #include <Servo.h>
+ #include <EEPROM.h>
  
 // Pin definitions
 const int knockSensor = 0;         // Piezo sensor on pin 0.
@@ -55,7 +56,17 @@ digitalWrite(BEEP_PIN,LOW);
    setLock(true);
   Serial.begin(9600);                     // Uncomment the Serial.bla lines for debugging.
   Serial.println("Program start.");       // but feel free to comment them out after it's working right.
-  
+
+  int addr = 0;
+int size = maximumKnocks*sizeof(int);
+byte* ptr = (byte*)secretCode;
+for (int addr=0;addr<size;++addr,++ptr)
+{
+   *ptr = EEPROM.read(addr);
+}
+
+     Serial.println("Lock read from in EEprom.");
+     
 }
 
 void beep(int num)
@@ -156,8 +167,20 @@ void listenToSecretKnock(){
     }
   } else { // if we're in programming mode we still validate the lock, we just don't do anything with the lock
     validateKnock();
+
+    
     // and we blink the green and red alternately to show that program is complete.
     Serial.println("New lock stored.");
+
+int addr = 0;
+int size = maximumKnocks*sizeof(int);
+byte* ptr = (byte*)secretCode;
+for (int addr=0;addr<size;++addr,++ptr)
+{
+   EEPROM.write(addr, *ptr);
+}
+
+     Serial.println("New lock stored in EEprom.");
   }
 }
 
