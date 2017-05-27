@@ -1,5 +1,11 @@
+// Bluetooth box lock.
+// Use Bluetooth emulator app on the smartphone.
+// Some emulators support UTF-8, and the code can be in every language.
+// Disconnect the rx/tx when uploading because the USB uses the same connections.
+// Some easter eggs are in the code. can you find them ? (-:
+
+
 #include <EEPROM.h> 
- 
  #include <Servo.h>
 Servo servo;
  const int SERVO_PIN = 10;
